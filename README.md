@@ -13,7 +13,7 @@ You can write en-GB.yml
 en-GB:
   message:
     welcome: "Hello, %{nickname}!"
-    farewell: "It\'s %{time} o\'clock. Good bye, %{nickname}!"
+    farewell: "It's %{time} o'clock. Good bye, %{nickname}!"
 ```
 
 and ko.yml.
