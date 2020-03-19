@@ -18,8 +18,8 @@ import (
 )
 
 type Sejong struct {
-	Locale string
-	V *viper.Viper
+	Locale     string
+	V          *viper.Viper
 	configured []string
 }
 

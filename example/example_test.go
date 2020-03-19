@@ -37,7 +37,7 @@ func ExampleT() {
 	// 안녕, 길동!
 }
 
-func ExampleMultipleTranslator(){
+func ExampleMultipleTranslator() {
 	ko, err := sejong.New("ko")
 	if err != nil {
 		fmt.Println(err)
