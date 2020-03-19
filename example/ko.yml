@@ -1,0 +1,5 @@
+# ko.yml
+ko:
+  message:
+    welcome: "안녕, %{nickname}!"
+    farewell: "%{time}시 입니다. 잘가요, %{nickname}!"
