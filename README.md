@@ -12,8 +12,8 @@ You can write en-GB.yml
 # en-GB.yml
 en-GB:
   message:
-    welcome: 'Hello, %{nickname}!'
-    farewell: 'It\'s %{time} o\'clock. Good bye, %{nickname}!'
+    welcome: "Hello, %{nickname}!"
+    farewell: "It\'s %{time} o\'clock. Good bye, %{nickname}!"
 ```
 
 and ko.yml.
@@ -22,8 +22,8 @@ and ko.yml.
 # ko.yml
 ko:
   message:
-    welcome: '안녕, %{nickname}!'
-    farewell: '%{time}시 입니다. 잘가요, %{nickname}!'
+    welcome: "안녕, %{nickname}!"
+    farewell: "%{time}시 입니다. 잘가요, %{nickname}!"
 ```
 
 then you can use `sejong.T` for translate.
@@ -77,10 +77,10 @@ func main() {
 	ko := sejong.New("ko")
 	gb := sejong.New("en-GB")
 
-	message := ko.T("welcome_message", "nickname", "길동")
+	message := ko.T("message.welcome", "nickname", "길동")
 	fmt.Println(message) // 안녕, 길동!
 
-	message = gb.T("welcome_message", "nickname", "John")
+	message = gb.T("message.welcome", "nickname", "John")
 	fmt.Println(message) // Hello, John!
 }
 
