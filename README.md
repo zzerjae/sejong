@@ -1,5 +1,7 @@
 # sejong
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/zzerjae/sejong)](https://goreportcard.com/report/github.com/zzerjae/sejong)
+
 simple translate library like ruby's i18n module
 
 ## Example
