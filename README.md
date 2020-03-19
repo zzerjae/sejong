@@ -42,15 +42,27 @@ import (
 func main() {
 	sejong.Locale = "en-GB"
 
-	message := sejong.T("message.welcome", "nickname", "John")
+	message, err := sejong.T("message.welcome", "nickname", "John")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	fmt.Println(message) // Hello, John!
 
-	message = sejong.T("message.farewell", "nickname", "John", "time", strconv.Itoa(time.Now().Hour()))
+	message, err = sejong.T("message.farewell", "nickname", "John", "time", strconv.Itoa(time.Now().Hour()))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	fmt.Println(message) // It's 5 o'clock. Good bye, John!
 
 	sejong.Locale = "ko"
 
-	message = sejong.T("message.welcome", "nickname", "길동")
+	message, err = sejong.T("message.welcome", "nickname", "길동")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	fmt.Println(message) // 안녕, 길동!
 }
 ```
@@ -71,17 +83,35 @@ Example:
 package main
 
 import (
+	"fmt"
+
 	"github.com/zzerjae/sejong"
 )
 
 func main() {
-	ko := sejong.New("ko")
-	gb := sejong.New("en-GB")
+	ko, err := sejong.New("ko")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	gb, err := sejong.New("en-GB")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-	message := ko.T("message.welcome", "nickname", "길동")
+	message, err := ko.T("message.welcome", "nickname", "길동")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	fmt.Println(message) // 안녕, 길동!
 
-	message = gb.T("message.welcome", "nickname", "John")
+	message, err = gb.T("message.welcome", "nickname", "John")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	fmt.Println(message) // Hello, John!
 }
 

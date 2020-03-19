@@ -9,7 +9,9 @@
 package sejong
 
 import (
+	"errors"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -25,10 +27,10 @@ var sj *Sejong
 var Locale string
 
 func init() {
-	sj = New("")
+	sj, _ = New("")
 }
 
-func New(locale string) *Sejong {
+func New(locale string) (*Sejong, error) {
 	v := viper.New()
 	v.SetEnvPrefix("SEJONG")
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
@@ -45,30 +47,27 @@ func New(locale string) *Sejong {
 	if locale != "" {
 		v.SetConfigName(locale)
 		if err := v.ReadInConfig(); err != nil {
-			panic("sejong.T: locale file is not exist")
+			return nil, errors.New("sejong.New: locale file is not exist")
 		}
 		configured = append(configured, locale)
 
 	}
 
 	return &Sejong{
-		V: v,
+		V:          v,
 		configured: configured,
-		Locale: locale,
-	}
+		Locale:     locale,
+	}, nil
 }
 
-func T(key string, words ...string) string {
+func T(key string, words ...string) (string, error) {
 	sj.Locale = Locale
 	return sj.T(key, words...)
 }
 
-func (s *Sejong) T(key string, words ...string) string {
+func (s *Sejong) T(key string, words ...string) (string, error) {
 	if s.Locale == "" {
-		panic("sejong.T: locale is not set")
-	}
-	if len(words)%2 == 1 {
-		panic("sejong.T: odd word count")
+		return "", errors.New("sejong.T: locale is not set")
 	}
 
 	var ok bool
@@ -85,11 +84,19 @@ func (s *Sejong) T(key string, words ...string) string {
 		}
 		s.configured = append(s.configured, s.Locale)
 	}
-
 	str := s.V.GetString(s.Locale + "." + key)
+
+	if len(words)%2 == 1 {
+		return str, errors.New("sejong.T: odd word count")
+	}
 	r := newReplacer(words)
 
-	return r.Replace(str)
+	result := r.Replace(str)
+	if matched, _ := regexp.MatchString("%{\\w+}", result); matched {
+		return result, errors.New("sejong.T: translate is not completed")
+	}
+
+	return result, nil
 }
 
 func newReplacer(words []string) *strings.Replacer {
