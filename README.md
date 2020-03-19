@@ -33,6 +33,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/zzerjae/sejong"
@@ -44,7 +45,7 @@ func main() {
 	message := sejong.T("message.welcome", "nickname", "John")
 	fmt.Println(message) // Hello, John!
 
-	message = sejong.T("message.farewell", "nickname", "John", "time", time.Now().Hour())
+	message = sejong.T("message.farewell", "nickname", "John", "time", strconv.Itoa(time.Now().Hour()))
 	fmt.Println(message) // It's 5 o'clock. Good bye, John!
 
 	sejong.Locale = "ko"
