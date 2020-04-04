@@ -3,3 +3,6 @@ ko:
   message:
     welcome: "안녕, %{nickname}!"
     farewell: "%{time}시 입니다. 잘가요, %{nickname}!"
+    friend:
+      zero: "저는 친구가 없어요."
+      other: "저는 %{count}명의 친구가 있어요."
