@@ -5,7 +5,6 @@
 
 // sejong is an simple translate library.
 // it was inspired by ruby's i18n module.
-
 package sejong
 
 import (
@@ -19,14 +18,22 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Sejong handles locale configurations for translation.
 type Sejong struct {
-	Locale     string
-	V          *viper.Viper
-	configured []string
+	// Locale contains the language to be translate.
+	Locale string
+	// v gets the location of the locale file from the environment variable.
+	// v is also used to get the sentence using the key in each locale file.
+	v *viper.Viper
+	// locales is used when using translations in multiple languages
+	// ​​at the same time to determine whether each locale file is loaded.
+	locales []string
 }
 
-var sj *Sejong
+// Locale contains the language to be translate. It is used only if you don't create your Sejong instance.
 var Locale string
+
+var sj *Sejong
 
 func init() {
 	sj, _ = New("")
@@ -46,20 +53,20 @@ func New(locale string) (*Sejong, error) {
 	v.AddConfigPath(path)
 	v.SetConfigType("yml")
 
-	var configured []string
+	var locales []string
 	if locale != "" {
 		v.SetConfigName(locale)
 		if err := v.ReadInConfig(); err != nil {
 			return nil, errors.New("sejong.New: locale file is not exist")
 		}
-		configured = append(configured, locale)
+		locales = append(locales, locale)
 
 	}
 
 	return &Sejong{
-		V:          v,
-		configured: configured,
-		Locale:     locale,
+		v:       v,
+		locales: locales,
+		Locale:  locale,
 	}, nil
 }
 
@@ -80,18 +87,18 @@ func (s *Sejong) T(key string, words ...string) (string, error) {
 	}
 
 	var ok bool
-	for _, l := range s.configured {
+	for _, l := range s.locales {
 		if s.Locale == l {
 			ok = true
 			break
 		}
 	}
 	if !ok {
-		s.V.SetConfigName(s.Locale)
-		if err := s.V.ReadInConfig(); err != nil {
+		s.v.SetConfigName(s.Locale)
+		if err := s.v.ReadInConfig(); err != nil {
 			panic("sejong.T: locale file is not exist")
 		}
-		s.configured = append(s.configured, s.Locale)
+		s.locales = append(s.locales, s.Locale)
 	}
 
 	dict, err := getDict(words)
@@ -100,7 +107,7 @@ func (s *Sejong) T(key string, words ...string) (string, error) {
 	}
 
 	key = s.Locale + "." + key
-	entry := s.V.Get(key)
+	entry := s.v.Get(key)
 	if entry == nil {
 		return "", errors.New("sejong.T: not exist key")
 	}
