@@ -9,7 +9,7 @@ import (
 func Test_getDict(t *testing.T) {
 	dict, err := getDict([]string{})
 	assert.Nil(t, dict)
-	assert.Error(t, err)
+	assert.Nil(t, err)
 
 	dict, err = getDict([]string{"foo", "bar", "john", "doe"})
 	assert.Equal(t, map[string]string{"foo": "bar", "john": "doe"}, dict)

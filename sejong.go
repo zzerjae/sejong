@@ -140,9 +140,12 @@ func newReplacer(words []string) *strings.Replacer {
 }
 
 func getDict(words []string) (map[string]string, error) {
-	if len(words) == 0 || len(words)%2 == 1 {
+	if len(words) == 0 {
+		return nil, nil
+	} else if len(words)%2 == 1 {
 		return nil, errors.New("sejong.getDict: odd word count")
 	}
+
 	dict := make(map[string]string, len(words)/2)
 	for i := 0; i < len(words)-1; i += 2 {
 		key := words[i]
