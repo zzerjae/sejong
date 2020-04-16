@@ -107,7 +107,6 @@ func (s *Sejong) T(key string, words ...string) (string, error) {
 	}
 
 	key = s.Locale + "." + key
-	key = strings.ToLower(key)
 	entry := s.v.Get(key)
 	if entry == nil {
 		return "", errors.New("sejong.T: not exist key")
@@ -126,6 +125,16 @@ func (s *Sejong) T(key string, words ...string) (string, error) {
 	}
 
 	return result, nil
+}
+
+// HasKey checks the key exists.
+func HasKey(key string) bool {
+	return sj.HasKey(key)
+}
+
+// HasKey checks the key exists.
+func (s *Sejong) HasKey(key string) bool {
+	return s.v.IsSet(key)
 }
 
 func newReplacer(words []string) *strings.Replacer {
