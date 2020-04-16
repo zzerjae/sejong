@@ -107,6 +107,7 @@ func (s *Sejong) T(key string, words ...string) (string, error) {
 	}
 
 	key = s.Locale + "." + key
+	key = strings.ToLower(key)
 	entry := s.v.Get(key)
 	if entry == nil {
 		return "", errors.New("sejong.T: not exist key")
