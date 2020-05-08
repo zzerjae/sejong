@@ -134,6 +134,7 @@ func HasKey(key string) bool {
 
 // HasKey checks the key exists.
 func (s *Sejong) HasKey(key string) bool {
+	key = s.Locale + "." + key
 	return s.v.IsSet(key)
 }
 
